@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Python to JS Example</title>
+</head>
+<body>
+    <h1 id="welcome-heading">Hello!</h1>
+
+    <script>
+        // Safely inject Python variables into JavaScript
+        let pythonName = "{{ name }}";
+        let pythonScore = {{ score }};
+
+        // Use JavaScript to change the HTML dynamically based on Python data
+        document.getElementById("welcome-heading").innerHTML = 
+            `Welcome back, ${pythonName}! Your score is ${pythonScore}.`;
+    </script>
+</body>
+</html>
