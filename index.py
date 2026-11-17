@@ -33,6 +33,12 @@ def get_data():
             "cpu": f"{random.randint(10, 95)}%",
             "status": "Maintenance",
         },
+        {
+            "id": 4,
+            "server": "Apple",
+            "cpu": f"{random.randint(10, 95)}%",
+            "status": "Maintenance",
+        },
     ]
     return jsonify(data)
 
