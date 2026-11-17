@@ -2,20 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Python to JS Example</title>
+    <title>Live Python Table</title>
+    <style>
+        table { border-collapse: collapse; width: 50%; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+    </style>
 </head>
 <body>
-    <h1>Hello</h1>
-    <h1 id="welcome-heading">Hello!</h1>
+
+    <button onclick="updateTable()">Refresh Now</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Server</th>
+                <th>CPU Load</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- JavaScript will populate rows here -->
+        </tbody>
+    </table>
 
     <script>
-        // Safely inject Python variables into JavaScript
-        let pythonName = "{{ name }}";
-        let pythonScore = {{ score }};
+        async function updateTable() {
+            try {
+                // 1. Fetch JSON data from Python
+                const response = await fetch('/api/data');
+                const data = await response.json();
 
-        // Use JavaScript to change the HTML dynamically based on Python data
-        document.getElementById("welcome-heading").innerHTML = 
-            `Welcome back, ${pythonName}! Your score is ${pythonScore}.`;
+                // 2. Select the table body and clear old rows
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = '';
+
+                // 3. Loop through the Python data and create new rows
+                data.forEach(item => {
+                    const row = `
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>${item.server}</td>
+                            <td>${item.cpu}</td>
+                            <td>${item.status}</td>
+                        </tr>
+                    `;
+                    tbody.insertAdjacentHTML('beforeend', row);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Load data immediately on page load
+        updateTable();
+
+        // Optional: Auto-update every 3 seconds (3000 ms)
+        setInterval(updateTable, 3000);
     </script>
+
 </body>
 </html>
